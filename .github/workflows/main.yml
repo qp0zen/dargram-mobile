@@ -1,0 +1,22 @@
+name: Build Android APK
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Install Flet
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install flet
+      - name: Build APK
+        run: flet build apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: darkgram-app
+          path: build/apk/*.apk

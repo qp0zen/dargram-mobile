@@ -5,11 +5,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # Обновили до v4
+      - uses: actions/checkout@v4
       
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          # Указываем версию, которую просит система, чтобы не ждать лишней переустановки
+          flutter-version: '3.19.0' 
           
       - name: Install Dependencies
         run: |
@@ -17,10 +19,11 @@ jobs:
           pip install flet
           
       - name: Build APK
-        run: flet build apk
+        # Добавляем --yes, чтобы робот сам соглашался на всё
+        run: flet build apk --yes
         
       - name: Upload APK
-        uses: actions/upload-artifact@v4 # ВОТ ТУТ ГЛАВНОЕ ИСПРАВЛЕНИЕ (v4)
+        uses: actions/upload-artifact@v4
         with:
           name: darkgram-app
           path: build/apk/*.apk
